@@ -13,11 +13,12 @@
 const express = require("express");
 const cors = require("cors");
 const dbConfig = require("./app/config/db.config");
+const cron = require('./app/common/cronjob');
 
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:4200"
+  origin: "http://65.1.82.24:7872"
 };
 
 app.use(cors(corsOptions));
@@ -31,8 +32,9 @@ app.use(express.urlencoded({ extended: true }));
 const db = require("./app/models");
 const Portal = db.portal;
 
+// for local change localhost to 65.1.82.24
 db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  .connect("mongodb://larenonAdmin:EpMAYqj2nIHDFDSADAS32@localhost:27017/larenon-master?authSource=admin&retryWrites=false", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -47,7 +49,7 @@ db.mongoose
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to rental management system backend." });
 });
 
 // routes
@@ -62,7 +64,7 @@ require("./app/routes/rental_payment.routes")(app);
 require("./app/routes/rental_notification.routes")(app);
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 7871;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

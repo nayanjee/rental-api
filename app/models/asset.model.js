@@ -52,15 +52,15 @@ const AssetSchema = new mongoose.Schema({
     default: null
   },
   leaseCommencementDate: {
-    type: String,
+    type: Date,
     default: null
   },
   rentCommencementDate: {
-    type: String,
+    type: Date,
     default: null
   },
   agreementExpiryDate: {
-    type: String,
+    type: Date,
     default: null
   },
   LockInPeriod: {
