@@ -34,7 +34,7 @@ const Portal = db.portal;
 
 // for local change localhost to 65.1.82.24
 db.mongoose
-  .connect("mongodb://larenonAdmin:EpMAYqj2nIHDFDSADAS32@localhost:27017/larenon-master?authSource=admin&retryWrites=false", {
+  .connect("mongodb://larenonAdmin:EpMAYqj2nIHDFDSADAS32@65.1.82.24:27017/larenon-master?authSource=admin&retryWrites=false", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
