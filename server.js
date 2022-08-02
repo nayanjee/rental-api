@@ -13,11 +13,12 @@
 const express = require("express");
 const cors = require("cors");
 const dbConfig = require("./app/config/db.config");
-const cron = require('./app/common/cronjob');
+// const cron = require('./app/common/cronjob');
 
 const app = express();
 
 var corsOptions = {
+  // origin: "http://localhost:4200"
   origin: "http://65.1.82.24:7872"
 };
 
@@ -35,7 +36,9 @@ const Portal = db.portal;
 // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
 // .connect("mongodb://larenonAdmin:EpMAYqj2nIHDFDSADAS32@localhost:27017/larenon-master?authSource=admin&retryWrites=false", {
 db.mongoose
-  .connect("mongodb://larenonAdmin:EpMAYqj2nIHDFDSADAS32@localhost:27017/larenon-master?authSource=admin&retryWrites=false", {
+  //.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  // .connect("mongodb://larenonAdmin:EpMAYqj2nIHDFDSADAS32@localhost:27017/larenon-master?authSource=admin&retryWrites=false", {
+  .connect("mongodb://larenonAdmin:EpMAYqj2nIHDFDSADAS32@localhost:27017/larenon-master?authSource=admin", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
