@@ -101,3 +101,11 @@ exports.updateCheque = (req, res) => {
     }
   });
 }
+
+exports.updateAmount = (req, res) => {
+  const updateData = {amount: req.body.amount};
+  RentalPayment.updateOne({ _id: req.body._id }, updateData, function (err, data) {
+    if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
+    res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
+  });
+}

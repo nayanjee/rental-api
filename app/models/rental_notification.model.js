@@ -19,10 +19,6 @@ const RentalNotificationSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
-    priority: {
-        type: Number,
-        default: 100
-    },
     status: {
         type: Number,
         default: 0

@@ -13,7 +13,7 @@
 const express = require("express");
 const cors = require("cors");
 const dbConfig = require("./app/config/db.config");
-// const cron = require('./app/common/cronjob');
+const cron = require('./app/common/cronjob');
 
 const app = express();
 
@@ -33,9 +33,8 @@ app.use(express.urlencoded({ extended: true }));
 const db = require("./app/models");
 const Portal = db.portal;
 
-// .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-// .connect("mongodb://larenonAdmin:EpMAYqj2nIHDFDSADAS32@localhost:27017/larenon-master?authSource=admin&retryWrites=false", {
 db.mongoose
+  //.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
   .connect("mongodb://larenonAdmin:EpMAYqj2nIHDFDSADAS32@localhost:27017/larenon-master?authSource=admin&retryWrites=false", {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -51,7 +50,7 @@ db.mongoose
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to rental management system backend." });
+  res.json("You are on the wrong track. Please check your address and port. I would like to inform you that this is a Larenone Healthcare Pvt. Ltd.'s property and tampering with it will be considered against the law.");
 });
 
 // routes

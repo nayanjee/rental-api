@@ -10,5 +10,8 @@ module.exports = function(app) {
   });
 
 
-  app.post("/api/rental_notification/create", controller.create);
+  app.get("/api/notification/all", controller.getAll);
+
+  app.put("/api/notification/delete", controller.delete);
+  app.put("/api/notification/changeStatus", controller.changeStatus);
 };
