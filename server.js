@@ -35,7 +35,7 @@ const Portal = db.portal;
 
 db.mongoose
   //.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-  .connect("mongodb://laadmin:l@r3n0n@12#12@localhost:27017/larenonMongo?authSource=admin&retryWrites=false", {
+  .connect("mongodb://laadmin:l@r3n0n@12#12@43.205.10.171:27017/larenonMongo?authSource=admin&retryWrites=false", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
