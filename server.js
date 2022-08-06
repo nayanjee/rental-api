@@ -18,8 +18,8 @@ const cron = require('./app/common/cronjob');
 const app = express();
 
 var corsOptions = {
-  // origin: "http://localhost:4200"
-  origin: "http://65.1.82.24:7872"
+  origin: "http://localhost:4200"
+  //origin: "http://65.1.82.24:7872"
 };
 
 app.use(cors(corsOptions));
@@ -34,8 +34,8 @@ const db = require("./app/models");
 const Portal = db.portal;
 
 db.mongoose
-  //.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-  .connect("mongodb://larenonAdmin:EpMAYqj2nIHDFDSADAS32@localhost:27017/larenon-master?authSource=admin&retryWrites=false", {
+  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  //.connect("mongodb://larenonAdmin:EpMAYqj2nIHDFDSADAS32@localhost:27017/larenon-master?authSource=admin&retryWrites=false", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })

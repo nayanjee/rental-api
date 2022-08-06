@@ -1,5 +1,6 @@
 const db = require("../models");
 const Asset = db.asset;
+const Lessor = db.lessor;
 
 exports.create = (req, res) => {
   Asset.create(req.body, (err, suc) => {
@@ -97,12 +98,27 @@ exports.getFullAssetByPropertyType = (req, res) => {
 
 exports.changeAssetStatus = (req, res) => {
   let status = req.body.isActive ? true : false;
+  
+  Lessor.findOne({_id: req.body.ownerId}, (error, result) => {
+    if (error) return res.status(400).send({status:400, message: 'problemFindingRecord'});
+    if (result) {
+      if (result.isActive) {
+        const updateData = {isActive: status, isOccupied: false};
+        Asset.update({ _id: req.body._id }, updateData, function (err, data) {
+          if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
+          res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
+        });
+      } else {
+        res.status(200).send({ status: 200, message: "ownerInactive", data: [] });
+      }
+    } else {
+      return res.status(200).send({status:400, message: 'noRecord'});
+    }
 
-  const updateData = {isActive: status, isOccupied: false};
-  Asset.update({ _id: req.body._id }, updateData, function (err, data) {
-    if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
-    res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
+    //res.status(200).send({status:200, message:'Success', data:result});
   });
+
+  
 };
 
 exports.changeFlatStatus = (req, res) => {

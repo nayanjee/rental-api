@@ -1,4 +1,5 @@
 const db = require("../models");
+const Asset = db.asset;
 const Lessor = db.lessor;
 
 exports.create = (req, res) => {
@@ -46,21 +47,45 @@ exports.getOwnerByPropertyType = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  const updateData = {isDeleted: true};
+  const updateData = {isActive: false, isDeleted: true};
   Lessor.update({ _id: req.body._id }, updateData, function (err, data) {
-    if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
-    res.status(200).send({ status: 200, message: "successfullyDeleted", data: [] });
+    if (err) {
+      return res.status(400).send({ status: 400, message: "somethingWrong" });
+    } else {
+      // res.status(200).send({ status: 200, message: "successfullyDeleted", data: [] });
+      Asset.find({ownerId: req.body._id}, (error, result) => {
+        if (result && result.length) {
+          result.forEach((element) => {
+            Asset.update({ _id: element._id }, {isActive: false, isDeleted: true}, function (err, data) { });
+          });
+          res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
+        }
+      });
+    }
   });
 };
 
 exports.changeStatus = (req, res) => {
-  console.log(req.body)
   let status = req.body.isActive ? true : false;
 
   const updateData = {isActive: status};
   Lessor.update({ _id: req.body._id }, updateData, function (err, data) {
-    if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
-    res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
+    if (err) {
+      return res.status(400).send({ status: 400, message: "somethingWrong" });
+    } else {
+      if (!status) {
+        Asset.find({ownerId: req.body._id}, (error, result) => {
+          if (result && result.length) {
+            result.forEach((element) => {
+              Asset.update({ _id: element._id }, {isActive: false}, function (err, data) { });
+            });
+            res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
+          }
+        });
+      } else {
+        res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
+      }
+    }
   });
 };
 
