@@ -2,7 +2,6 @@ const db = require("../models");
 const RentalPayment = db.rental_payment;
 
 exports.create = (req, res) => {
-  console.log(req.body);
   const nextYear = parseInt(req.body.year) + 1;
   const query = {
     financialYear: req.body.year + '-' + nextYear, 

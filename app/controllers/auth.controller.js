@@ -1,3 +1,6 @@
+//import mongoose from 'mongoose';
+const mongoose = require("mongoose");
+
 const config = require("../config/auth.config");
 
 const Validate = require('../common/validation');
@@ -64,26 +67,27 @@ exports.signin = (req, res) => {
     .populate("portals")
     .exec(async (err, admin) => {
       if (err) return res.status(500).send({ status: 500, message: MSG.somethingWrong });
-      if (!admin) return res.status(400).send({ status: 400, message: MSG.noUser });
+      if (!admin) return res.status(200).send({ status: 400, message: MSG.noUser });
       var passwordIsValid = bcrypt.compareSync(req.body.password, admin.password);
-      if (!passwordIsValid) return res.status(400).send({ status: 400, message: MSG.invalidEmailPassword });
-      if (!admin.isActive) return res.status(400).send({ status: 400, message: MSG.accountInactive });
+      if (!passwordIsValid) return res.status(200).send({ status: 400, message: MSG.invalidEmailPassword });
+      if (!admin.isActive) return res.status(200).send({ status: 400, message: MSG.accountInactive });
 
       // CHECK ADMIN HAS PERMISSION TO ACCESS THE PORTAL OR NOT
-      // var isAuthorize = false;
-      // for (let i = 0; i < admin.portals.length; i++) {
-      //   if (admin.portals[i]._id == req.body.portal) {
-      //     isAuthorize = true;
-      //   }
-      // }
-      // if (!isAuthorize) return res.status(400).send({ status: 400, message: MSG.noAccess });
+      var isAuthorize = false;
+      for (let i = 0; i < admin.portals.length; i++) {
+        if (admin.portals[i].slug === req.body.portal) {
+          isAuthorize = true;
+        }
+      }
+      if (!isAuthorize) return res.status(200).send({ status: 400, message: MSG.noAccess });
 
       var token = jwt.sign({ id: admin.id }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
 
       // IF ADMIN HAS PORTAL ACCESS PERMISSION THEN GET HOW MANY ACCESS THEY HAVE
-      const authorities = await getAuthority(admin._id, req.body.portal);
+      // const authorities = await getAuthority(admin._id, req.body.portal);
+      const authorities = [];
       
       const data = {
         id:           admin._id,

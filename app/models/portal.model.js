@@ -14,6 +14,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const PortalSchema = new mongoose.Schema({
+	slug: {
+		type: String,
+	},
 	name: {
 		type: String,
 	}
