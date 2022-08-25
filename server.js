@@ -34,8 +34,8 @@ const db = require("./app/models");
 const Portal = db.portal;
 
 db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-  //.connect("mongodb://laadmin:lar3n0n787@localhost:27017/larenonMongo?authSource=admin&retryWrites=false", {
+  //.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  .connect("mongodb://laadmin:lar3n0n787@localhost:27017/larenonMongo?authSource=admin&retryWrites=false", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
