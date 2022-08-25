@@ -19,7 +19,8 @@ exports.create = (req, res) => {
       const reqData = {
         financialYear: req.body.year + '-' + nextYear, 
         assetId: req.body.assetId,
-        lessorId: req.body.ownerId
+        lessorId: req.body.ownerId,
+        createdBy: req.body.createdBy
       }
 
       for (let i=4; i<=12; i++) {
@@ -87,9 +88,8 @@ exports.updateCheque = (req, res) => {
   RentalPayment.findOne({chequeNo: req.body.chequeNo}, (error, result) => {
     if (error) return res.status(400).send({status:400, message: 'problemFindingRecord'});
 
-    console.log('result---', result);
     if (!result) {
-      const updateData = {chequeNo: req.body.chequeNo};
+      const updateData = {chequeNo: req.body.chequeNo, updatedBy: req.body.updatedBy};
       RentalPayment.updateOne({ _id: req.body._id }, updateData, function (err, data) {
         if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
         res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
@@ -102,7 +102,7 @@ exports.updateCheque = (req, res) => {
 }
 
 exports.updateAmount = (req, res) => {
-  const updateData = {amount: req.body.amount};
+  const updateData = {amount: req.body.amount, updatedBy: req.body.updatedBy};
   RentalPayment.updateOne({ _id: req.body._id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });

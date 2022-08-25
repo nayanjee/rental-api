@@ -73,10 +73,13 @@ exports.signin = (req, res) => {
       if (!admin.isActive) return res.status(200).send({ status: 400, message: MSG.accountInactive });
 
       // CHECK ADMIN HAS PERMISSION TO ACCESS THE PORTAL OR NOT
+      console.log('admin---', admin);
       var isAuthorize = false;
-      for (let i = 0; i < admin.portals.length; i++) {
-        if (admin.portals[i].slug === req.body.portal) {
-          isAuthorize = true;
+      if (admin.portals && admin.portals.length) {
+        for (let i = 0; i < admin.portals.length; i++) {
+          if (admin.portals[i].slug === req.body.portal) {
+            isAuthorize = true;
+          }
         }
       }
       if (!isAuthorize) return res.status(200).send({ status: 400, message: MSG.noAccess });

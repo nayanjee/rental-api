@@ -45,7 +45,19 @@ const LessorSchema = new mongoose.Schema({
 	isDeleted: {
 		type: Boolean,
 		default: false
-	}
+	},
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Admin",
+        default: null
+    },
+    updatedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Admin",
+        default: null
+    }
+}, {
+    timestamps: true
 });
 
 mongoose.model('Lessor', LessorSchema);

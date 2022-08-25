@@ -28,4 +28,9 @@ db.permission   = require("./permission.model");
 db.rental_payment = require("./rental_payment.model");
 db.rental_notification = require("./rental_notification.model");
 
+db.sales = require("./sales.model");
+db.stocks = require("./stock.model");
+db.products = require("./product.model");
+db.exl_stockiest = require("./exl_stockiest.model");
+
 module.exports = db;

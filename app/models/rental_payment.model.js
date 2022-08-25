@@ -39,7 +39,7 @@ const RentalPaymentSchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Admin",
-        default: "629f2b920be81137cfedb9b6"
+        default: null
     },
     updatedBy: {
         type: mongoose.Schema.Types.ObjectId,

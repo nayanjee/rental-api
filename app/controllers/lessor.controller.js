@@ -47,7 +47,7 @@ exports.getOwnerByPropertyType = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  const updateData = {isActive: false, isDeleted: true};
+  const updateData = {isActive: false, isDeleted: true, updatedBy: req.body.updatedBy};
   Lessor.update({ _id: req.body._id }, updateData, function (err, data) {
     if (err) {
       return res.status(400).send({ status: 400, message: "somethingWrong" });
@@ -68,7 +68,7 @@ exports.delete = (req, res) => {
 exports.changeStatus = (req, res) => {
   let status = req.body.isActive ? true : false;
 
-  const updateData = {isActive: status};
+  const updateData = {isActive: status, updatedBy: req.body.updatedBy};
   Lessor.update({ _id: req.body._id }, updateData, function (err, data) {
     if (err) {
       return res.status(400).send({ status: 400, message: "somethingWrong" });

@@ -103,7 +103,7 @@ exports.changeAssetStatus = (req, res) => {
     if (error) return res.status(400).send({status:400, message: 'problemFindingRecord'});
     if (result) {
       if (result.isActive) {
-        const updateData = {isActive: status, isOccupied: false};
+        const updateData = {isActive: status, isOccupied: false, updatedBy: req.body.updatedBy};
         Asset.update({ _id: req.body._id }, updateData, function (err, data) {
           if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
           res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
@@ -123,7 +123,7 @@ exports.changeAssetStatus = (req, res) => {
 
 exports.changeFlatStatus = (req, res) => {
   let status = req.body.isOccupied ? true : false;
-  const updateData = {isOccupied: status};
+  const updateData = {isOccupied: status, updatedBy: req.body.updatedBy};
   Asset.update({ _id: req.body._id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
@@ -131,7 +131,7 @@ exports.changeFlatStatus = (req, res) => {
 };
 
 exports.deleteFlat = (req, res) => {
-  const updateData = {isDeleted: true};
+  const updateData = {isDeleted: true, updatedBy: req.body.updatedBy};
   Asset.update({ _id: req.body._id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
