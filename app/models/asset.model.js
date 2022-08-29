@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const AssetSchema = new mongoose.Schema({
+  company: {
+    type: String,
+    default: 'larenon'
+  },
   propertyType: {
     type: String,
     default: 'residential'
