@@ -85,7 +85,8 @@ exports.signin = (req, res) => {
       if (!isAuthorize) return res.status(200).send({ status: 400, message: MSG.noAccess });
 
       var token = jwt.sign({ id: admin.id }, config.secret, {
-        expiresIn: 86400 // 24 hours
+        //expiresIn: 86400 // 24 hours
+        expiresIn: 120 // 2 minutes
       });
 
       // IF ADMIN HAS PORTAL ACCESS PERMISSION THEN GET HOW MANY ACCESS THEY HAVE

@@ -1,3 +1,4 @@
+var ObjectId = require('mongodb').ObjectID;
 const db = require("../models");
 const Asset = db.asset;
 const Lessor = db.lessor;
@@ -39,6 +40,7 @@ exports.getOwnerByPropertyType = (req, res) => {
       $sort: { name: 1 }
     }
   ]).exec((error, result) => {
+    console.log(result);
     if (error) return res.status(400).send({status:400, message: 'problemFindingRecord'});
     if (!result) return res.status(200).send({status:400, message: 'noRecord'});
 
