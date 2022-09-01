@@ -12,10 +12,10 @@ const RentalNotification 	= db.rental_notification;
  *
  * Upcoming agreement expiry cron
  * This cron will fetch the records 10 days before the contract expiration date
- * Execution time: Every-day at 01:00 AM
+ * Execution time: Every-day at 06:50 AM IST
  * 
 */
-cron.schedule('* * * * *', async () => {
+cron.schedule('20 1 * * *', async () => {
 	const td = moment().format('YYYY-MM-DD hh:mm:ss');
 	console.log('Agreement Expiry Cron ---', td);
 
@@ -134,10 +134,10 @@ let getUpcomingAgreementExpiry = (today, agoDate, ids) => {
  *
  * Upcoming rent payment cron
  * This cron will get the record 1 day before the payment date
- * Execution time: Every-day at 02:00 AM
+ * Execution time: Every-day at 06:40 AM IST
  * 
 */
-cron.schedule('* * * * *', async () => {
+cron.schedule('10 1 * * *', async () => {
 	const date = parseInt(moment().subtract(1, 'days').format('DD'));
 	const month = parseInt(moment().format('MM'));
 	const year = parseInt(moment().format('YYYY'));
@@ -246,10 +246,10 @@ let getPreviousDayAssets = (date) => {
  *
  * Rent increment cron
  * This cron will get the record 1 day before the increment date
- * Execution time: Every-day at 02:00 AM
+ * Execution time: Every-day at 06:30 AM IST
  * 
 */
-cron.schedule('44 14 * * *', async () => {
+cron.schedule('0 1 * * *', async () => {
 	console.log('Increment Cron Executed---');
 	const today = moment().format('YYYY-MM-DD[T]00:00:00.000[Z]');
 	// To get active notifications
