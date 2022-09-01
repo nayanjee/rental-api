@@ -16,6 +16,10 @@ const RentalNotification 	= db.rental_notification;
  * 
 */
 cron.schedule('* * * * *', async () => {
+	const td = moment().format('YYYY-MM-DD hh:mm:ss');
+	console.log('Agreement Expiry Cron ---', td);
+
+
 	const today = moment().format('YYYY-MM-DD[T]23:59:59.999[Z]');
 	const ago_10_days = moment().subtract(9,'d').format('YYYY-MM-DD');
 
@@ -98,7 +102,7 @@ let getActiveNotification = () => {
         resolve([]);
       }
   	})
-  })
+  });
 }
 
 let getUpcomingAgreementExpiry = (today, agoDate, ids) => {
@@ -236,3 +240,85 @@ let getPreviousDayAssets = (date) => {
   	});
   })
 };
+
+
+/* 
+ *
+ * Rent increment cron
+ * This cron will get the record 1 day before the increment date
+ * Execution time: Every-day at 02:00 AM
+ * 
+*/
+cron.schedule('44 14 * * *', async () => {
+	console.log('Increment Cron Executed---');
+	const today = moment().format('YYYY-MM-DD[T]00:00:00.000[Z]');
+	// To get active notifications
+	const activeNotifications = await getIncrementActiveNotifications();
+
+	// To get today's increment data
+	const todayIncrement = await getTodayIncrement(today, activeNotifications);
+
+	// Insert neet to increment records in notification collection
+	if (todayIncrement && todayIncrement.length) {
+		const insertData = [];
+		todayIncrement.forEach(element => {
+			const pushData = {
+				assetId:  element._id,
+				type: 'increment',
+				dueDate: element.rentEscalationDate,
+				message: 'Rent incrementation - ' + element.flatNo + ', ' + element.address + ', ' + element.location
+			}
+			insertData.push(pushData);
+		});
+
+		RentalNotification.insertMany(insertData).then(function(){
+	    console.log("---Notification Increment Data inserted");
+		}).catch(function(error){
+	    console.log("---Notification Increment Data insert---", error);
+		});
+	}
+});
+
+let getIncrementActiveNotifications = () => {
+	return new Promise(resolve => {
+  	const query = { 
+  		type: 'increment',
+      isActive: true,
+      isDeleted: false
+    }
+
+  	RentalNotification.find(query, (error, result) => {
+  		if (result && result.length) {
+        let ids = [];
+        result.forEach(element => {
+        	ids.push(element.assetId);
+        })
+
+        resolve(ids);
+      } else {
+        resolve([]);
+      }
+  	})
+  })
+}
+
+let getTodayIncrement = (date, ids) => {
+	return new Promise(resolve => {
+  	const query = { 
+      isActive: true,
+      isDeleted: false,
+      rentEscalationDate: { $eq: new Date(date) },
+      _id: { $nin: ids }
+    }
+
+    Asset.aggregate([
+    	{ $match: query }
+		]).exec((error, result) => {
+      if (result && result.length) {
+        resolve(result);
+      } else {
+        resolve([]);
+      }
+    });
+  });
+}

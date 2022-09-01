@@ -72,7 +72,7 @@ const AssetSchema = new mongoose.Schema({
     default: null
   },
   rentEscalationDate: {
-    type: String,
+    type: Date,
     default: null
   },
   rentAmount: {
