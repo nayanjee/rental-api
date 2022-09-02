@@ -138,6 +138,9 @@ let getUpcomingAgreementExpiry = (today, agoDate, ids) => {
  * 
 */
 cron.schedule('10 1 * * *', async () => {
+	const td = moment().format('YYYY-MM-DD hh:mm:ss');
+	console.log('Upcoming rent payment cron ---', td);
+
 	const date = parseInt(moment().subtract(1, 'days').format('DD'));
 	const month = parseInt(moment().format('MM'));
 	const year = parseInt(moment().format('YYYY'));
@@ -165,11 +168,11 @@ cron.schedule('10 1 * * *', async () => {
 				insertData.push(pushData);
 			});
 
-			// RentalNotification.insertMany(insertData).then(function(){
-		 //    console.log("---Payment Due Notification inserted");
-			// }).catch(function(error){
-		 //    console.log("---Payment Due Notification ", error);
-			// });
+			RentalNotification.insertMany(insertData).then(function(){
+		    console.log("---Upcoming rent payment Notification inserted");
+			}).catch(function(error){
+		    console.log("---Upcoming rent payment Notification ", error);
+			});
 		}
 	}
 });
@@ -250,8 +253,11 @@ let getPreviousDayAssets = (date) => {
  * 
 */
 cron.schedule('0 1 * * *', async () => {
-	console.log('Increment Cron Executed---');
+	const td = moment().format('YYYY-MM-DD hh:mm:ss');
+	console.log('Rent increment cron ---', td);
+
 	const today = moment().format('YYYY-MM-DD[T]00:00:00.000[Z]');
+	
 	// To get active notifications
 	const activeNotifications = await getIncrementActiveNotifications();
 
