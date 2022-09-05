@@ -10,6 +10,11 @@ const StateSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    countryId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Country",
+        default: null
+    },
     gstCode: {
         type: Number,
         default: null
