@@ -16,7 +16,7 @@ const CoownerSchema = new mongoose.Schema({
     default: 100
   },
   glCode: {
-    type: Number,
+    type: String,
     default: null
   },
   ifsc: {
@@ -24,7 +24,7 @@ const CoownerSchema = new mongoose.Schema({
     default: null
   },
   accountNo: {
-    type: Number,
+    type: String,
     default: null
   },
   phone: {

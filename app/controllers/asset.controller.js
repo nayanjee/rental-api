@@ -4,7 +4,7 @@ const Lessor = db.lessor;
 
 exports.create = (req, res) => {
   Asset.create(req.body, (err, suc) => {
-    if (err) return res.status(500).send({status: 400, message: 'somethingWrong'});
+    if (err) return res.status(500).send({status: 400, message: err});
     res.status(200).send({status:200, message:'added', data:suc});
   });
 };

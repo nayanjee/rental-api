@@ -16,7 +16,7 @@ const RentalPaymentSchema = new mongoose.Schema({
 		ref: "Lessor",
 		default: null
 	},
-    year: {
+    /*year: {
         type: Number,
         default: null
     },
@@ -35,6 +35,10 @@ const RentalPaymentSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true
+    },*/
+    payments: {
+        type: Object,
+        default: null
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
