@@ -57,7 +57,7 @@ exports.create = (req, res) => {
     if (!result) return res.status(200).send({status:400, message: 'No record found.'});
 
     if (result.length) {
-      return res.status(400).send({status: 400, message: 'exists'});
+      return res.status(200).send({status: 400, message: 'This property already exists in our records.'});
     } else {
       // ADD MAIN OWNER PAYMENT
       const reqData = {
