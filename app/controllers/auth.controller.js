@@ -55,13 +55,13 @@ exports.signup = (req, res) => {
 
 exports.signin = (req, res) => {
   const email = Validate.email(req.body.email);
-  if (email) return res.status(400).send({ status: 400, param: 'email', message: email });
+  if (email) return res.status(200).send({ status: 400, param: 'email', message: email });
 
   const password = Validate.password(req.body.password);
-  if (password) return res.status(400).send({ status: 400, param: 'password', message: password });
+  if (password) return res.status(200).send({ status: 400, param: 'password', message: password });
 
-  // const portal = Validate.portal(req.body.portal);
-  // if (portal) return res.status(400).send({ status: 400, param: 'portal', message: portal });
+  const portal = Validate.portal(req.body.portal);
+  if (portal) return res.status(200).send({ status: 400, param: 'portal', message: portal });
 
   Admin.findOne({ email: req.body.email, isDeleted: false })
     .populate("portals")
