@@ -14,7 +14,7 @@ const AuthoritySchema = new mongoose.Schema({
 	},
 	authority: [
 		{
-			type: Number,
+			type: Object,
 			default: []
 		}
 	]

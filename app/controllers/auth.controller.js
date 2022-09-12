@@ -73,12 +73,13 @@ exports.signin = (req, res) => {
       if (!admin.isActive) return res.status(200).send({ status: 400, message: MSG.accountInactive });
 
       // CHECK ADMIN HAS PERMISSION TO ACCESS THE PORTAL OR NOT
-      console.log('admin---', admin);
       var isAuthorize = false;
+      var portalId = '';
       if (admin.portals && admin.portals.length) {
         for (let i = 0; i < admin.portals.length; i++) {
           if (admin.portals[i].slug === req.body.portal) {
             isAuthorize = true;
+            portalId = admin.portals[i]._id;
           }
         }
       }
@@ -90,8 +91,8 @@ exports.signin = (req, res) => {
       });
 
       // IF ADMIN HAS PORTAL ACCESS PERMISSION THEN GET HOW MANY ACCESS THEY HAVE
-      // const authorities = await getAuthority(admin._id, req.body.portal);
-      const authorities = [];
+      const authorities = await getAuthority(admin._id, portalId);
+      //const authorities = [];
       
       const data = {
         id:           admin._id,
@@ -108,10 +109,10 @@ exports.signin = (req, res) => {
 const getAuthority = (adminId, portalId) => {
   return new Promise(resolve => {
     Authority.findOne({ adminId: adminId, portalId: portalId }).exec((err, res) => {
-      if (err || !res || res.authority.length < 0) {
-        resolve([]);
-      } else {
+      if (res && res.authority.length) {
         resolve(res.authority);
+      } else {
+        resolve([]);
       }
     });
   });
