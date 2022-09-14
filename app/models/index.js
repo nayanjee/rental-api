@@ -28,6 +28,8 @@ db.permission   = require("./permission.model");
 db.rental_payment = require("./rental_payment.model");
 db.rental_notification = require("./rental_notification.model");
 
+db.ins_motor = require("./ins_motor.model");
+
 db.sales = require("./sales.model");
 db.stocks = require("./stock.model");
 db.products = require("./product.model");

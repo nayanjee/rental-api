@@ -60,6 +60,7 @@ require("./app/routes/state.routes")(app);
 require("./app/routes/asset.routes")(app);
 require("./app/routes/lessor.routes")(app);
 require("./app/routes/coowner.routes")(app);
+require("./app/routes/ins_motor.routes")(app);
 require("./app/routes/permission.routes")(app);
 require("./app/routes/rental_payment.routes")(app);
 require("./app/routes/rental_notification.routes")(app);

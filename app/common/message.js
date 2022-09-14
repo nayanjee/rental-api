@@ -2,8 +2,10 @@ module.exports = {
 	"emailBlank": "Email cannot be blank.",
 	"emailNotValid": "Email is not valid.",
 	"invalidEmailPassword": "Invalid email or password.",
+	"invalidDate": "Enter a valid date.",
 	"noUser": "No user found!",
 	"noRecord": "No record found!",
+	"numberOnly": "It must be a number only.",
 	"successLogout": "Loggedout Successfully!",
 	"problemLogout": "Sorry, we are having trouble signing you out!",
 	"problemFindingAdmin": "There was a problem finding the admin.",
@@ -14,4 +16,5 @@ module.exports = {
 	"noAccess": "You are not authorized to access this application!",
 	
 	"subjectForgotPassword": "✔ Reset your password on Larenon",
+
 }
