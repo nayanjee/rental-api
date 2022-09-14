@@ -46,7 +46,7 @@ exports.create = (req, res) => {
 };
 
 exports.getMotors = function(req, res) {
-  Motor.find({isActive:true, isDeleted:false}, (error, result) => {
+  Motor.find({isActive:true, isDeleted:false, isDisplay: true}, (error, result) => {
     if (error) return res.status(400).send({status:400, message: 'problemFindingRecord'});
     if (!result) return res.status(200).send({status:400, message: 'noRecord'});
 
