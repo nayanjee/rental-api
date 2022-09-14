@@ -12,7 +12,7 @@ module.exports = function(app) {
 
   app.post("/api/motor/create", controller.create);
 
-  //app.get("/api/rental_payment/payments/:financialYear", controller.getPayments);
+  app.get("/api/motors", controller.getMotors);
 
   //app.put("/api/rental_payment/updateCheque", controller.updateCheque);
   //app.put("/api/rental_payment/updateAmount", controller.updateAmount);

@@ -6,7 +6,6 @@ const db = require("../models");
 const Motor = db.ins_motor;
 
 exports.create = (req, res) => {
-  console.log('Motor Create API');
   const make = Validate.string(req.body.make);
   if (make) return res.status(200).send({ status: 400, param: 'make', message: make });
 
@@ -44,4 +43,13 @@ exports.create = (req, res) => {
     if (err) return res.status(500).send({status: 400, message: 'somethingWrong'});
     res.status(200).send({status:200, message:'sucAdded', data:suc});
   });
+};
+
+exports.getMotors = function(req, res) {
+  Motor.find({isActive:true, isDeleted:false}, (error, result) => {
+    if (error) return res.status(400).send({status:400, message: 'problemFindingRecord'});
+    if (!result) return res.status(200).send({status:400, message: 'noRecord'});
+
+    res.status(200).send({status:200, message:'Success', data:result});
+  }).sort({name : 1});
 };
