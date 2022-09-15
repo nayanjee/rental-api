@@ -14,6 +14,6 @@ module.exports = function(app) {
 
   app.get("/api/motors", controller.getMotors);
 
-  //app.put("/api/rental_payment/updateCheque", controller.updateCheque);
-  //app.put("/api/rental_payment/updateAmount", controller.updateAmount);
+  app.put("/api/motor/delete", controller.delete);
+  app.put("/api/motor/update", controller.update);
 };

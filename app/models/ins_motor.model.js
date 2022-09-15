@@ -54,7 +54,7 @@ const InsMotorSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isDisplay: {
+    isCurrent: {
         type: Boolean,
         default: true
     },
