@@ -3,29 +3,20 @@ const moment = require('moment');
 const Validate = require('../common/validationMotor');
 
 const db = require("../models");
-const Motor = db.ins_motor;
+const Corporate = db.ins_corporate;
 
 exports.create = (req, res) => {
-  const make = Validate.string(req.body.make);
-  if (make) return res.status(200).send({ status: 400, param: 'make', message: make });
-
-  const model = Validate.string(req.body.model);
-  if (model) return res.status(200).send({ status: 400, param: 'model', message: model });
-
-  const manufactureAt = Validate.number(req.body.manufactureAt);
-  if (manufactureAt) return res.status(200).send({ status: 400, param: 'manufactureAt', message: manufactureAt });
-
-  const chachisNo = Validate.string(req.body.chachisNo);
-  if (chachisNo) return res.status(200).send({ status: 400, param: 'chachisNo', message: chachisNo });
-
-  const idv = Validate.number(req.body.idv);
-  if (idv) return res.status(200).send({ status: 400, param: 'idv', message: idv });
+  const product = Validate.string(req.body.product);
+  if (product) return res.status(200).send({ status: 400, param: 'product', message: product });
 
   const proposer = Validate.string(req.body.proposer);
   if (proposer) return res.status(200).send({ status: 400, param: 'proposer', message: proposer });
 
   const insurer = Validate.string(req.body.insurer);
   if (insurer) return res.status(200).send({ status: 400, param: 'insurer', message: insurer });
+
+  const sumInsured = Validate.number(req.body.sumInsured);
+  if (sumInsured) return res.status(200).send({ status: 400, param: 'sumInsured', message: sumInsured });
 
   const policyNo = Validate.string(req.body.policyNo);
   if (policyNo) return res.status(200).send({ status: 400, param: 'policyNo', message: policyNo });
@@ -42,19 +33,19 @@ exports.create = (req, res) => {
   // Modifying dueDate to UTC
   req.body.dueDate = moment(req.body.dueDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
 
-  Motor.create(req.body, (err, suc) => {
+  Corporate.create(req.body, (err, suc) => {
     if (err) return res.status(500).send({status: 400, message: 'somethingWrong'});
     res.status(200).send({status:200, message:'sucAdded', data:suc});
   });
 };
 
-exports.getMotors = function(req, res) {
+exports.getCoporate = function(req, res) {
   const sdate = '01-01-'+req.params.year;
   const edate = '31-12-'+req.params.year;
   const startDate = moment(sdate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
   const endDate = moment(edate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
 
-  Motor.find({
+  Corporate.find({
     isActive:true, 
     isDeleted:false, 
     dueDate:{$gte: new Date(startDate), $lte: new Date(endDate)}

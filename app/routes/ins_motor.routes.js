@@ -12,7 +12,7 @@ module.exports = function(app) {
 
   app.post("/api/motor/create", controller.create);
 
-  app.get("/api/motors", controller.getMotors);
+  app.get("/api/motors/:year", controller.getMotors);
 
   app.put("/api/motor/delete", controller.delete);
   app.put("/api/motor/update", controller.update);
