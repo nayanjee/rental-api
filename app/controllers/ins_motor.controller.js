@@ -48,7 +48,7 @@ exports.create = (req, res) => {
   });
 };
 
-exports.getMotors = function(req, res) {
+exports.getData = function(req, res) {
   const sdate = '01-01-'+req.params.year;
   const edate = '31-12-'+req.params.year;
   const startDate = moment(sdate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');

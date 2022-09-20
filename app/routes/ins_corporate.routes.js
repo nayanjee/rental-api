@@ -11,8 +11,9 @@ module.exports = function(app) {
 
 
   app.post("/api/corporate/create", controller.create);
+  app.post("/api/corporate/renew", controller.create);
 
-  app.get("/api/corporate/:year", controller.getCoporate);
+  app.get("/api/corporate/:year", controller.getData);
 
   //app.put("/api/motor/delete", controller.delete);
   //app.put("/api/motor/update", controller.update);

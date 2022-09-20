@@ -42,10 +42,6 @@ const InsCorporateSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isCurrent: {
-        type: Boolean,
-        default: true
-    },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Admin",
