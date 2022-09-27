@@ -61,26 +61,17 @@ exports.update = (req, res) => {
   const id = Validate.string(req.body._id);
   if (id) return res.status(200).send({ status: 400, param: '_id', message: id });
 
-  const make = Validate.string(req.body.make);
-  if (make) return res.status(200).send({ status: 400, param: 'make', message: make });
-
-  const model = Validate.string(req.body.model);
-  if (model) return res.status(200).send({ status: 400, param: 'model', message: model });
-
-  const manufactureAt = Validate.number(req.body.manufactureAt);
-  if (manufactureAt) return res.status(200).send({ status: 400, param: 'manufactureAt', message: manufactureAt });
-
-  const chachisNo = Validate.string(req.body.chachisNo);
-  if (chachisNo) return res.status(200).send({ status: 400, param: 'chachisNo', message: chachisNo });
-
-  const idv = Validate.number(req.body.idv);
-  if (idv) return res.status(200).send({ status: 400, param: 'idv', message: idv });
+  const product = Validate.string(req.body.product);
+  if (product) return res.status(200).send({ status: 400, param: 'product', message: product });
 
   const proposer = Validate.string(req.body.proposer);
   if (proposer) return res.status(200).send({ status: 400, param: 'proposer', message: proposer });
 
   const insurer = Validate.string(req.body.insurer);
   if (insurer) return res.status(200).send({ status: 400, param: 'insurer', message: insurer });
+
+  const sumInsured = Validate.number(req.body.sumInsured);
+  if (sumInsured) return res.status(200).send({ status: 400, param: 'sumInsured', message: sumInsured });
 
   const policyNo = Validate.string(req.body.policyNo);
   if (policyNo) return res.status(200).send({ status: 400, param: 'policyNo', message: policyNo });
@@ -94,11 +85,10 @@ exports.update = (req, res) => {
   const updatedBy = Validate.string(req.body.updatedBy);
   if (updatedBy) return res.status(200).send({ status: 400, param: 'updatedBy', message: updatedBy });
 
-  // Modifying dueDate to UTC,
-
+  // Modifying dueDate to UTC
   req.body.dueDate = moment(req.body.dueDate,'DD/MM/YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
 
-  Motor.updateOne({_id: req.body._id}, {$set: req.body}, function (err, data) {
+  Corporate.updateOne({_id: req.body._id}, {$set: req.body}, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "sucUpdated", data: [] });
   });
@@ -112,7 +102,7 @@ exports.delete = (req, res) => {
   if (updatedBy) return res.status(200).send({ status: 400, param: 'updatedBy', message: updatedBy });
 
   const updateData = {isDeleted: true,  updatedBy: req.body.updatedBy};
-  Motor.update({ _id: req.body._id }, updateData, function (err, data) {
+  Corporate.update({ _id: req.body._id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
   });

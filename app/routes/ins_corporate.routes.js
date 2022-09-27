@@ -15,6 +15,6 @@ module.exports = function(app) {
 
   app.get("/api/corporate/:year", controller.getData);
 
-  //app.put("/api/motor/delete", controller.delete);
-  //app.put("/api/motor/update", controller.update);
+  app.put("/api/corporate/delete", controller.delete);
+  app.put("/api/corporate/update", controller.update);
 };
