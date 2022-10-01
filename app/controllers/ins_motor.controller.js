@@ -50,15 +50,15 @@ exports.create = (req, res) => {
 };
 
 exports.getData = function(req, res) {
-  const sdate = '01-01-'+req.params.year;
-  const edate = '31-12-'+req.params.year;
+  const sdate =     '01-01-'+req.params.year;
+  const edate =     '31-12-'+req.params.year;
   const startDate = moment(sdate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
-  const endDate = moment(edate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
+  const endDate =   moment(edate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
 
   Motor.find({
-    isActive:true, 
-    isDeleted:false, 
-    dueDate:{$gte: new Date(startDate), $lte: new Date(endDate)}
+    isActive:   true, 
+    isDeleted:  false, 
+    dueDate:    {$gte: new Date(startDate), $lte: new Date(endDate)}
   }, (error, result) => {
     if (error) return res.status(400).send({status:400, message: 'problemFindingRecord'});
     if (!result) return res.status(200).send({status:400, message: 'noRecord'});
@@ -121,7 +121,11 @@ exports.delete = (req, res) => {
   const updatedBy = Validate.string(req.body.updatedBy);
   if (updatedBy) return res.status(200).send({ status: 400, param: 'updatedBy', message: updatedBy });
 
-  const updateData = {isDeleted: true,  updatedBy: req.body.updatedBy};
+  const updateData = {
+    isDeleted: true,  
+    updatedBy: req.body.updatedBy
+  };
+
   Motor.update({ _id: req.body._id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
@@ -138,11 +142,14 @@ exports.upload = (req, res) => {
   const name = Validate.string(req.body.name);
   if (name) return res.status(200).send({ status: 400, param: 'name', message: name });
 
+  const createdBy = Validate.string(req.body.createdBy);
+  if (createdBy) return res.status(200).send({ status: 400, param: 'createdBy', message: createdBy });
+
   const reqData = {
     category: 'motor',
-    itemId: req.body.id,
-    type: req.body.type,
-    name: req.body.name
+    itemId:   req.body.id,
+    type:     req.body.type,
+    name:     req.body.name
   }
   Upload.create(reqData, (err, suc) => {
     if (err) return res.status(500).send({status: 400, message: 'somethingWrong'});
@@ -152,11 +159,11 @@ exports.upload = (req, res) => {
 
 exports.getUpload = (req, res) => {
   Upload.find({
-    category: 'motor',
-    isActive: true, 
-    isDeleted: false,
-    itemId: req.params.id,
-    type: req.params.type
+    category:   'motor',
+    isActive:   true, 
+    isDeleted:  false,
+    itemId:     req.params.id,
+    type:       req.params.type
   }, (error, result) => {
     if (error) return res.status(400).send({status:400, message: 'problemFindingRecord'});
     if (!result) return res.status(200).send({status:400, message: 'noRecord'});
@@ -172,7 +179,11 @@ exports.deleteUpload = (req, res) => {
   const updatedBy = Validate.string(req.body.updatedBy);
   if (updatedBy) return res.status(200).send({ status: 400, param: 'updatedBy', message: updatedBy });
 
-  const updateData = {isDeleted: true,  updatedBy: req.body.updatedBy};
+  const updateData = {
+    isDeleted: true,  
+    updatedBy: req.body.updatedBy
+  };
+
   Upload.updateOne({ _id: req.body._id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
