@@ -4,6 +4,7 @@ const Validate = require('../common/validationMotor');
 
 const db = require("../models");
 const Motor = db.ins_motor;
+const Upload = db.ins_upload;
 
 exports.create = (req, res) => {
   const make = Validate.string(req.body.make);
@@ -126,3 +127,31 @@ exports.delete = (req, res) => {
     res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
   });
 };
+
+exports.upload = (req, res) => {
+  const reqData = {
+    category: 'motor',
+    itemId: req.body.id,
+    type: req.body.type,
+    name: req.body.name
+  }
+  Upload.create(reqData, (err, suc) => {
+    if (err) return res.status(500).send({status: 400, message: 'somethingWrong'});
+    res.status(200).send({status:200, message:'sucAdded', data:suc});
+  });
+}
+
+exports.getUpload = (req, res) => {
+  Upload.find({
+    category: 'motor',
+    isActive: true, 
+    isDeleted: false,
+    itemId: req.params.id,
+    type: req.params.type
+  }, (error, result) => {
+    if (error) return res.status(400).send({status:400, message: 'problemFindingRecord'});
+    if (!result) return res.status(200).send({status:400, message: 'noRecord'});
+
+    res.status(200).send({status:200, message:'Success', data:result});
+  });
+}

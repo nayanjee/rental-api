@@ -12,8 +12,10 @@ module.exports = function(app) {
 
   app.post("/api/motor/create", controller.create);
   app.post("/api/motor/renew", controller.create);
+  app.post("/api/motor/upload", controller.upload);
 
   app.get("/api/motors/:year", controller.getData);
+  app.get("/api/motors/getUploads/:id/:type", controller.getUpload);
 
   app.put("/api/motor/delete", controller.delete);
   app.put("/api/motor/update", controller.update);
