@@ -129,6 +129,15 @@ exports.delete = (req, res) => {
 };
 
 exports.upload = (req, res) => {
+  const id = Validate.string(req.body.id);
+  if (id) return res.status(200).send({ status: 400, param: '_id', message: id });
+
+  const type = Validate.string(req.body.type);
+  if (type) return res.status(200).send({ status: 400, param: 'type', message: type });
+
+  const name = Validate.string(req.body.name);
+  if (name) return res.status(200).send({ status: 400, param: 'name', message: name });
+
   const reqData = {
     category: 'motor',
     itemId: req.body.id,
@@ -155,3 +164,17 @@ exports.getUpload = (req, res) => {
     res.status(200).send({status:200, message:'Success', data:result});
   });
 }
+
+exports.deleteUpload = (req, res) => {
+  const id = Validate.string(req.body._id);
+  if (id) return res.status(200).send({ status: 400, param: '_id', message: id });
+
+  const updatedBy = Validate.string(req.body.updatedBy);
+  if (updatedBy) return res.status(200).send({ status: 400, param: 'updatedBy', message: updatedBy });
+
+  const updateData = {isDeleted: true,  updatedBy: req.body.updatedBy};
+  Upload.updateOne({ _id: req.body._id }, updateData, function (err, data) {
+    if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
+    res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
+  });
+};

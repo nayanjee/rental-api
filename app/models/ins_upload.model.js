@@ -26,6 +26,11 @@ const UploadSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    updatedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Admin",
+        default: null
+    },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Admin",
