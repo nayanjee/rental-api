@@ -1,4 +1,11 @@
+const xlsx = require('xlsx');
+const moment = require('moment');
+
+const uploadFile = require("../middlewares/uploadPayment");
+
 const db = require("../models");
+const Asset = db.asset;
+const Lessor = db.lessor;
 const Coowner = db.coowner;
 const RentalPayment = db.rental_payment;
 
@@ -240,5 +247,107 @@ exports.updateAmount = (req, res) => {
   RentalPayment.updateOne(reqData, {$set: updateData}, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
+  });
+}
+
+exports.importPayment = async (req, res) => {
+  try {
+    // To upload file
+    await uploadFile(req, res);
+
+    console.log('req---', req);
+    console.log('body---', req.body);
+    console.log('file---', req.file);
+
+    // Functionality after upload
+    if (req.file == undefined) {
+      return res.status(200).send({status:400, message: "Please upload a file!" });
+    }
+
+    //res.status(200).send({status:200, message: "Uploaded the file successfully: " + req.file.originalname});
+
+    // Insert records in database
+    const finalResult = await convertExcelToJson(req.file.originalname, req.body.financialYear);
+    res.status(200).send(finalResult);
+  } catch (err) {
+    res.status(200).send({status:500, message: `Could not upload the file: ${err}`});
+  }
+}
+
+let convertExcelToJson  = async (fileName, financialYear) => {
+  console.log('convertExcelToJson---');
+  return new Promise(async resolve => {
+    const filePath = './public/uploads/payments/' + fileName;
+    if (!filePath) {
+      resolve({status:400, message: 'FilePath is null!'});
+    }
+
+    // Read the file using pathname
+    const file = xlsx.readFile(filePath, { type: 'binary' , cellDates: true });
+    if (!file.SheetNames) {
+      resolve({status:400, message: "Worksheet's name or ressource was not found."});
+    }
+    
+    // Grab the sheet info from the file
+    const sheetNames = file.SheetNames;
+
+    // Convert to json using xlsx
+    const tempData = xlsx.utils.sheet_to_json(file.Sheets[sheetNames[0]]);
+    console.log('tempData---', tempData);
+
+    const totalRow = tempData.length;
+    if (totalRow == 0) {
+      resolve({status:400, message: 'File content is empty.'});
+    }
+    console.log('totalRow---', totalRow);
+
+    if (tempData.length > 1) {
+      const years = financialYear.split('-');
+
+      // change key name in array of objects
+      const newArray = tempData.map(item => {
+        let monthPayment = [];
+        for (var i=0; i<12; i++) {
+          let year = 0;
+          let month = 0;
+          if (i < 9) {
+            year = years[0];
+            month = i + 4;
+          } else {
+            year = parseInt(years[0]) + 1;
+            month = i - 8;
+          }
+          const fullMonth = moment().month(month - 1).format("MMM");
+          const chk = item[fullMonth+' Cheque'] ? item[fullMonth+' Cheque'] : null;
+          const amt = item[fullMonth+' Amount'] ? item[fullMonth+' Amount'] : null;
+
+          console.log('month--', month);
+          console.log('year--', year);
+          console.log('fullMonth--', fullMonth);
+
+          const monthPay = {
+            month : month,
+            year : year,
+            chequeNo : chk,
+            amount : amt
+          }
+          monthPayment.push(monthPay);
+        }
+
+        return {
+          financialYear: financialYear,
+          assetId: item['Asset ID'],
+          lessorId: item['Owner ID'],
+          payments: monthPayment,
+          createdBy: '629f2b920be81137cfedb9b6'
+        }
+      });
+      console.log('newArray---', newArray);
+      (async function(){
+        const insertMany = await RentalPayment.insertMany(newArray);
+        resolve({status:200, message: "Data added successfully."});
+      })();
+    }
+
   });
 }

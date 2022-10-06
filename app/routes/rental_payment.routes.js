@@ -11,6 +11,7 @@ module.exports = function(app) {
 
 
   app.post("/api/rental_payment/create", controller.create);
+  app.post("/api/rental_payment/upload", controller.importPayment);
 
   app.get("/api/rental_payment/payments/:financialYear", controller.getPayments);
 
