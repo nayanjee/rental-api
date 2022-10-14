@@ -4,6 +4,7 @@ const Validate = require('../common/validationMotor');
 
 const db = require("../models");
 const Corporate = db.ins_corporate;
+const Upload = db.ins_upload;
 
 exports.create = (req, res) => {
   const product = Validate.string(req.body.product);
@@ -103,6 +104,64 @@ exports.delete = (req, res) => {
 
   const updateData = {isDeleted: true,  updatedBy: req.body.updatedBy};
   Corporate.update({ _id: req.body._id }, updateData, function (err, data) {
+    if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
+    res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
+  });
+};
+
+exports.upload = (req, res) => {
+  const id = Validate.string(req.body.id);
+  if (id) return res.status(200).send({ status: 400, param: '_id', message: id });
+
+  const type = Validate.string(req.body.type);
+  if (type) return res.status(200).send({ status: 400, param: 'type', message: type });
+
+  const name = Validate.string(req.body.name);
+  if (name) return res.status(200).send({ status: 400, param: 'name', message: name });
+
+  const createdBy = Validate.string(req.body.createdBy);
+  if (createdBy) return res.status(200).send({ status: 400, param: 'createdBy', message: createdBy });
+
+  const reqData = {
+    category: 'corporate',
+    itemId:   req.body.id,
+    type:     req.body.type,
+    name:     req.body.name
+  }
+  Upload.create(reqData, (err, suc) => {
+    if (err) return res.status(500).send({status: 400, message: 'somethingWrong'});
+    res.status(200).send({status:200, message:'sucAdded', data:suc});
+  });
+}
+
+exports.getUpload = (req, res) => {
+  Upload.find({
+    category:   'corporate',
+    isActive:   true, 
+    isDeleted:  false,
+    itemId:     req.params.id,
+    type:       req.params.type
+  }, (error, result) => {
+    if (error) return res.status(400).send({status:400, message: 'problemFindingRecord'});
+    if (!result) return res.status(200).send({status:400, message: 'noRecord'});
+
+    res.status(200).send({status:200, message:'Success', data:result});
+  });
+}
+
+exports.deleteUpload = (req, res) => {
+  const id = Validate.string(req.body._id);
+  if (id) return res.status(200).send({ status: 400, param: '_id', message: id });
+
+  const updatedBy = Validate.string(req.body.updatedBy);
+  if (updatedBy) return res.status(200).send({ status: 400, param: 'updatedBy', message: updatedBy });
+
+  const updateData = {
+    isDeleted: true,  
+    updatedBy: req.body.updatedBy
+  };
+
+  Upload.updateOne({ _id: req.body._id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
   });
