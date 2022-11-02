@@ -337,23 +337,19 @@ let getTodayIncrement = (date, ids) => {
  *
  * Upcoming Motor insurance expiry cron
  * This cron will fetch the records 15 days before the due-date expiration date
- * Execution time: Every-day at 06:25 AM IST
+ * Execution time: Every-day at 07:00 AM IST
  * 
 */
-cron.schedule('*/1 * * * *', async () => {
+cron.schedule('30 1 * * *', async () => {
 	const td = moment().format('YYYY-MM-DD hh:mm:ss');
-	console.log('Motor Due-Date Expiry Cron ---', td);
 
 	const ago_15_days = moment().add(15,'d').format('YYYY-MM-DD');
-	console.log('ago_15_days----', ago_15_days);
 
 	// To get active notifications from ins_notification table
 	const motorsData = await getMotorData(ago_15_days);
-	console.log('motorsData----', motorsData);
 
 	// To get data from ins_motor table
 	const corporateData = await getCorporateData(ago_15_days);
-	console.log('corporateData----', corporateData);
 
 	const insertData = [];
 	if (motorsData && motorsData.length) {
@@ -367,7 +363,6 @@ cron.schedule('*/1 * * * *', async () => {
 			}
 			insertData.push(pushData);
 		});
-		console.log('111----', insertData);
 	}
 
 	if (corporateData && corporateData.length) {
@@ -380,11 +375,9 @@ cron.schedule('*/1 * * * *', async () => {
 			}
 			insertData.push(pushData);
 		});
-		console.log('222----', insertData);
 	}
 
 	if (insertData && insertData.length) {
-		console.log('333----', insertData);
 		InsuranceNotification.insertMany(insertData).then(function(){
 	    console.log("---Upcoming insurance due date Notification inserted");
 		}).catch(function(error){
