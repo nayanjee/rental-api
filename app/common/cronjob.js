@@ -5,6 +5,7 @@ const moment = require('moment');
 const db 										= require("../models");
 const Asset 								= db.asset;
 const Motor									= db.ins_motor;
+const Corporate							= db.ins_corporate;
 const RentalPayment 				= db.rental_payment;
 const RentalNotification 		= db.rental_notification;
 const InsuranceNotification = db.ins_notification;
@@ -339,38 +340,57 @@ let getTodayIncrement = (date, ids) => {
  * Execution time: Every-day at 06:25 AM IST
  * 
 */
-/*cron.schedule('*1 * * * *', async () => {
+cron.schedule('*/1 * * * *', async () => {
 	const td = moment().format('YYYY-MM-DD hh:mm:ss');
 	console.log('Motor Due-Date Expiry Cron ---', td);
 
 	const ago_15_days = moment().add(15,'d').format('YYYY-MM-DD');
+	console.log('ago_15_days----', ago_15_days);
 
 	// To get active notifications from ins_notification table
 	const motorsData = await getMotorData(ago_15_days);
+	console.log('motorsData----', motorsData);
 
 	// To get data from ins_motor table
-	const motorsData = await getMotorData(ago_15_days);
+	const corporateData = await getCorporateData(ago_15_days);
+	console.log('corporateData----', corporateData);
 
+	const insertData = [];
 	if (motorsData && motorsData.length) {
-			const insertData = [];
+		motorsData.forEach(element => {
+			const pushData = {
+				itemId:  element._id,
+				type: 'motor',
+				dueDate: element.dueDate,
+				regNo: element.regNo,
+				policyNo: element.policyNo
+			}
+			insertData.push(pushData);
+		});
+		console.log('111----', insertData);
+	}
 
-			motorsData.forEach(element => {
-				const pushData = {
-					itemId:  element._id,
-					type: 'motor',
-					dueDate: element.dueDate,
-					regNo: element.regNo,
-					policyNo: element.policyNo
-				}
-				insertData.push(pushData);
-			});
+	if (corporateData && corporateData.length) {
+		corporateData.forEach(element => {
+			const pushData = {
+				itemId:  element._id,
+				type: 'corporate',
+				dueDate: element.dueDate,
+				policyNo: element.policyNo
+			}
+			insertData.push(pushData);
+		});
+		console.log('222----', insertData);
+	}
 
-			InsuranceNotification.insertMany(insertData).then(function(){
-		    console.log("---Upcoming rent payment Notification inserted");
-			}).catch(function(error){
-		    console.log("---Upcoming rent payment Notification ", error);
-			});
-		}
+	if (insertData && insertData.length) {
+		console.log('333----', insertData);
+		InsuranceNotification.insertMany(insertData).then(function(){
+	    console.log("---Upcoming insurance due date Notification inserted");
+		}).catch(function(error){
+	    console.log("---Upcoming insurance due date Notification ", error);
+		});
+	}
 });
 
 let getMotorData = (date) => {
@@ -389,4 +409,22 @@ let getMotorData = (date) => {
       }
   	})
   })
-}*/
+}
+
+let getCorporateData = (date) => {
+  return new Promise(resolve => {
+    const query = { 
+      dueDate: { $eq: new Date(date) },
+      isActive: true,
+      isDeleted: false
+    }
+
+    Corporate.find(query, (error, result) => {
+      if (result && result.length) {
+        resolve(result);
+      } else {
+        resolve([]);
+      }
+    })
+  })
+}

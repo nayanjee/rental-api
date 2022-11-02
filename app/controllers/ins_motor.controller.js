@@ -6,6 +6,7 @@ const db = require("../models");
 const Motor = db.ins_motor;
 const Upload = db.ins_upload;
 const Corporate = db.ins_corporate;
+const InsuranceNotification = db.ins_notification;
 
 
 exports.create = (req, res) => {
@@ -261,6 +262,30 @@ let getCorporateData = (date) => {
     }
 
     Corporate.find(query, (error, result) => {
+      if (result && result.length) {
+        resolve(result);
+      } else {
+        resolve([]);
+      }
+    })
+  })
+}
+
+exports.dashboardNotification = async (req, res) => {
+  // To get active notifications from ins_notification table
+  const notifications = await getInsNotifications();
+
+  res.status(200).send({status:200, message:'Success', data:notifications});
+}
+
+let getInsNotifications = (date) => {
+  return new Promise(resolve => {
+    const query = { 
+      isActive: true,
+      isDeleted: false
+    }
+
+    InsuranceNotification.find(query, (error, result) => {
       if (result && result.length) {
         resolve(result);
       } else {
