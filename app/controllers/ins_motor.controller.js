@@ -5,6 +5,8 @@ const Validate = require('../common/validationMotor');
 const db = require("../models");
 const Motor = db.ins_motor;
 const Upload = db.ins_upload;
+const Corporate = db.ins_corporate;
+
 
 exports.create = (req, res) => {
   const make = Validate.string(req.body.make);
@@ -189,3 +191,81 @@ exports.deleteUpload = (req, res) => {
     res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
   });
 };
+
+exports.cronNotification = async (req, res) => {
+  const td = moment().format('YYYY-MM-DD hh:mm:ss');
+
+  const ago_15_days = moment().add(15,'d').format('YYYY-MM-DD');
+
+  // To get active notifications from ins_notification table
+  const motorsData = await getMotorData(ago_15_days);
+
+  // To get data from ins_corporate table
+  const corporatesData = await getCorporateData(ago_15_days);
+
+  const finalResult = [];
+  if (motorsData && motorsData.length) {
+    motorsData.forEach(element => {
+      const due = moment(element.dueDate).format('DD-MM-YYYY');
+      const pushData = {
+        itemId:  element._id,
+        type: 'motor',
+        dueDate: due,
+        regNo: element.regNo,
+        policyNo: element.policyNo
+      }
+      finalResult.push(pushData);
+    });
+  }
+
+  if (corporatesData && corporatesData.length) {
+    corporatesData.forEach(elem => {
+      const due2 = moment(elem.dueDate).format('DD-MM-YYYY');
+      const pushData2 = {
+        itemId:  elem._id,
+        type: 'corporate',
+        dueDate: due2,
+        policyNo: elem.policyNo
+      }
+      finalResult.push(pushData2);
+    });
+  }
+
+  res.status(200).send({status:200, message:'Success', data:finalResult});
+}
+
+let getMotorData = (date) => {
+  return new Promise(resolve => {
+    const query = { 
+      dueDate: { $eq: new Date(date) },
+      isActive: true,
+      isDeleted: false
+    }
+
+    Motor.find(query, (error, result) => {
+      if (result && result.length) {
+        resolve(result);
+      } else {
+        resolve([]);
+      }
+    })
+  })
+}
+
+let getCorporateData = (date) => {
+  return new Promise(resolve => {
+    const query = { 
+      dueDate: { $eq: new Date(date) },
+      isActive: true,
+      isDeleted: false
+    }
+
+    Corporate.find(query, (error, result) => {
+      if (result && result.length) {
+        resolve(result);
+      } else {
+        resolve([]);
+      }
+    })
+  })
+}

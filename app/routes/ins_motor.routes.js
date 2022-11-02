@@ -16,6 +16,7 @@ module.exports = function(app) {
 
   app.get("/api/motors/:year", controller.getData);
   app.get("/api/motors/getUploads/:id/:type", controller.getUpload);
+  app.get("/api/cron/notification", controller.cronNotification);
 
   app.put("/api/motor/delete", controller.delete);
   app.put("/api/motor/update", controller.update);

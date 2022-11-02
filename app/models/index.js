@@ -31,6 +31,7 @@ db.rental_notification = require("./rental_notification.model");
 db.ins_motor = require("./ins_motor.model");
 db.ins_upload = require("./ins_upload.model");
 db.ins_corporate = require("./ins_corporate.model");
+db.ins_notification = require("./ins_notification.model");
 
 db.sales = require("./sales.model");
 db.stocks = require("./stock.model");
