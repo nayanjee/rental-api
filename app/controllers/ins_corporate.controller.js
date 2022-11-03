@@ -41,15 +41,23 @@ exports.create = (req, res) => {
 };
 
 exports.getData = function(req, res) {
-  const sdate = '01-01-'+req.params.year;
-  const edate = '31-12-'+req.params.year;
+  const currentYear = moment().format('YYYY');
+
+  let dueDateQry = {};
+  const sdate =     '01-01-'+req.params.year;
   const startDate = moment(sdate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
-  const endDate = moment(edate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
+  if (req.params.year == currentYear) {
+    dueDateQry = { $gte: new Date(startDate) };
+  } else {
+    const edate =     '31-12-'+req.params.year;
+    const endDate =   moment(edate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
+    dueDateQry = { $gte: new Date(startDate), $lte: new Date(endDate) };
+  }
 
   Corporate.find({
-    isActive:true, 
-    isDeleted:false, 
-    dueDate:{$gte: new Date(startDate), $lte: new Date(endDate)}
+    isActive: true, 
+    isDeleted: false, 
+    dueDate: dueDateQry
   }, (error, result) => {
     if (error) return res.status(400).send({status:400, message: 'problemFindingRecord'});
     if (!result) return res.status(200).send({status:400, message: 'noRecord'});
