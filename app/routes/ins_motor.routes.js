@@ -22,4 +22,5 @@ module.exports = function(app) {
   app.put("/api/motor/delete", controller.delete);
   app.put("/api/motor/update", controller.update);
   app.put("/api/motor/upload/delete", controller.deleteUpload);
+  app.put("/api/notification/delete", controller.deleteNotificaton);
 };

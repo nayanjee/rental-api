@@ -302,3 +302,21 @@ let getInsNotifications = (date) => {
     })
   })
 }
+
+exports.deleteNotificaton = (req, res) => {
+  const id = Validate.string(req.body._id);
+  if (id) return res.status(200).send({ status: 400, param: '_id', message: id });
+
+  const updatedBy = Validate.string(req.body.updatedBy);
+  if (updatedBy) return res.status(200).send({ status: 400, param: 'updatedBy', message: updatedBy });
+
+  const updateData = {
+    isDeleted: true,  
+    updatedBy: req.body.updatedBy
+  };
+
+  InsuranceNotification.update({ _id: req.body._id }, updateData, function (err, data) {
+    if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
+    res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
+  });
+};
