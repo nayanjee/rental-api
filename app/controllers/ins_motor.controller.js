@@ -78,7 +78,7 @@ exports.getData = function(req, res) {
     result.forEach(element => {
       const due = moment(element.dueDate).format('DD-MM-YYYY');
       const pushData = {
-        itemId:  element._id,
+        _id:  element._id,
         make: element.make,
         model: element.model,
         manufactureAt: element.manufactureAt,
