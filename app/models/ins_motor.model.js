@@ -46,6 +46,10 @@ const InsMotorSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    remarks: {
+        type: String,
+        default: null
+    },
     isActive: {
         type: Boolean,
         default: true
