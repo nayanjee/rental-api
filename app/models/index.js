@@ -33,9 +33,9 @@ db.ins_upload = require("./ins_upload.model");
 db.ins_corporate = require("./ins_corporate.model");
 db.ins_notification = require("./ins_notification.model");
 
-db.sales = require("./sales.model");
-db.stocks = require("./stock.model");
-db.products = require("./product.model");
-db.exl_stockiest = require("./exl_stockiest.model");
+// db.sales = require("./sales.model");
+// db.stocks = require("./stock.model");
+// db.products = require("./product.model");
+// db.exl_stockiest = require("./exl_stockiest.model");
 
 module.exports = db;

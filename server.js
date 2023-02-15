@@ -36,8 +36,8 @@ const db = require("./app/models");
 const Portal = db.portal;
 
 db.mongoose
-  // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-  .connect("mongodb://laadmin:lar3n0n787@localhost:27017/larenonMongo?authSource=admin&retryWrites=false", {
+  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  // .connect("mongodb://laadmin:lar3n0n787@localhost:27017/larenonMongo?authSource=admin&retryWrites=false", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -67,8 +67,7 @@ require("./app/routes/ins_corporate.routes")(app);
 require("./app/routes/permission.routes")(app);
 require("./app/routes/rental_payment.routes")(app);
 require("./app/routes/rental_notification.routes")(app);
-
-require("./app/routes/stock.routes")(app);
+// require("./app/routes/stock.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 7871;

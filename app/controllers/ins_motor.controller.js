@@ -1,4 +1,5 @@
 const moment = require('moment');
+var bcrypt = require("bcryptjs");
 
 const Validate = require('../common/validationMotor');
 
@@ -55,6 +56,9 @@ exports.create = (req, res) => {
 exports.getData = function(req, res) {
   const currentYear = moment().format('YYYY');
 
+  const pass = bcrypt.hashSync('MCILarenon', 8);
+  console.log('pass--', pass);
+
   let dueDateQry = {};
   const sdate =     '01-01-'+req.params.year;
   const startDate = moment(sdate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
@@ -65,6 +69,7 @@ exports.getData = function(req, res) {
     const endDate =   moment(edate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]00:00:00.000[Z]');
     dueDateQry = { $gte: new Date(startDate), $lte: new Date(endDate) };
   }
+  console.log('Motor Get---', dueDateQry);
 
   Motor.find({
     isActive:   true, 
