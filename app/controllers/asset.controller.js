@@ -140,7 +140,6 @@ exports.deleteFlat = (req, res) => {
 
 exports.update = (req, res) => {
   Asset.findByIdAndUpdate({ _id: req.body.assetId }, req.body, (err, suc) => {
-    console.log('-----', res.status);
     if (err) return res.status(500).send({status: 400, message: 'somethingWrong'});
     res.status(200).send({status:200, message:'successfullyUpdated', data:[]});
   });

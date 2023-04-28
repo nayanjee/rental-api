@@ -19,6 +19,10 @@ const PortalSchema = new mongoose.Schema({
 	},
 	name: {
 		type: String,
+	},
+	status: {
+		type: Number,
+		default: 1,
 	}
 });
 

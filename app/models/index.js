@@ -25,6 +25,7 @@ db.lessor       = require("./lessor.model");
 db.coowner      = require("./coowner.model");
 db.authority    = require("./authority.model");
 db.permission   = require("./permission.model");
+db.rental_file = require("./rental_file.model");
 db.rental_payment = require("./rental_payment.model");
 db.rental_notification = require("./rental_notification.model");
 
