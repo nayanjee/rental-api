@@ -50,7 +50,7 @@ exports.getOwnerByPropertyType = (req, res) => {
 
 exports.delete = (req, res) => {
   const updateData = {isActive: false, isDeleted: true, updatedBy: req.body.updatedBy};
-  Lessor.update({ _id: req.body._id }, updateData, function (err, data) {
+  Lessor.updateOne({ _id: req.body._id }, updateData, function (err, data) {
     if (err) {
       return res.status(400).send({ status: 400, message: "somethingWrong" });
     } else {
@@ -58,7 +58,7 @@ exports.delete = (req, res) => {
       Asset.find({ownerId: req.body._id}, (error, result) => {
         if (result && result.length) {
           result.forEach((element) => {
-            Asset.update({ _id: element._id }, {isActive: false, isDeleted: true}, function (err, data) { });
+            Asset.updateOne({ _id: element._id }, {isActive: false, isDeleted: true}, function (err, data) { });
           });
           res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
         }
@@ -71,7 +71,7 @@ exports.changeStatus = (req, res) => {
   let status = req.body.isActive ? true : false;
 
   const updateData = {isActive: status, updatedBy: req.body.updatedBy};
-  Lessor.update({ _id: req.body._id }, updateData, function (err, data) {
+  Lessor.updateOne({ _id: req.body._id }, updateData, function (err, data) {
     if (err) {
       return res.status(400).send({ status: 400, message: "somethingWrong" });
     } else {
@@ -79,7 +79,7 @@ exports.changeStatus = (req, res) => {
         Asset.find({ownerId: req.body._id}, (error, result) => {
           if (result && result.length) {
             result.forEach((element) => {
-              Asset.update({ _id: element._id }, {isActive: false}, function (err, data) { });
+              Asset.updateOne({ _id: element._id }, {isActive: false}, function (err, data) { });
             });
             res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
           }

@@ -142,7 +142,7 @@ exports.delete = (req, res) => {
     updatedBy: req.body.updatedBy
   };
 
-  Motor.update({ _id: req.body._id }, updateData, function (err, data) {
+  Motor.updateOne({ _id: req.body._id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
   });
@@ -320,7 +320,7 @@ exports.deleteNotificaton = (req, res) => {
     updatedBy: req.body.updatedBy
   };
 
-  InsuranceNotification.update({ _id: req.body._id }, updateData, function (err, data) {
+  InsuranceNotification.updateOne({ _id: req.body._id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
   });

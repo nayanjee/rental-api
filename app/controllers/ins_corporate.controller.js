@@ -111,7 +111,7 @@ exports.delete = (req, res) => {
   if (updatedBy) return res.status(200).send({ status: 400, param: 'updatedBy', message: updatedBy });
 
   const updateData = {isDeleted: true,  updatedBy: req.body.updatedBy};
-  Corporate.update({ _id: req.body._id }, updateData, function (err, data) {
+  Corporate.updateOne({ _id: req.body._id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "sucDeleted", data: [] });
   });

@@ -13,7 +13,7 @@ exports.getAll = function(req, res) {
 
 exports.changeStatus = (req, res) => {
   const updateData = {status:req.body.status, isActive:req.body.isActive, isDeleted: false, updatedBy: req.body.userId};
-  RentalNotification.update({ _id: req.body.id }, updateData, function (err, data) {
+  RentalNotification.updateOne({ _id: req.body.id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
   });
@@ -21,7 +21,7 @@ exports.changeStatus = (req, res) => {
 
 exports.delete = (req, res) => {
   const updateData = {isActive:false, isDeleted: true,  updatedBy: req.body.userId};
-  RentalNotification.update({ _id: req.body.id }, updateData, function (err, data) {
+  RentalNotification.updateOne({ _id: req.body.id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "successfullyUpdated", data: [] });
   });

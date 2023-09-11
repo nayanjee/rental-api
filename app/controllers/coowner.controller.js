@@ -28,7 +28,7 @@ exports.update = (req, res) => {
 
 exports.delete = (req, res) => {
   const updateData = {isDeleted: true, updatedBy: req.body.updatedBy};
-  Coowner.update({ _id: req.body._id }, updateData, function (err, data) {
+  Coowner.updateOne({ _id: req.body._id }, updateData, function (err, data) {
     if (err) return res.status(400).send({ status: 400, message: "somethingWrong" });
     res.status(200).send({ status: 200, message: "successfullyDeleted", data: [] });
   });
